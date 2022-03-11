@@ -53,7 +53,10 @@ if __name__ == '__main__':
           str("{:.2f}".format(distance)) + " km")
 
     copyList = copy(CityCreator.listcity)
+
     glouton_insertion = CityCreator.insertion_proche(copyList)
     print("Tournée gloutone par insertion : ")
     CityCreator.affichertour(glouton_insertion)
 
+    print("La distance lors de la tournée glouton par insertion amélioré est de : " + str(
+        "{:.2F}".format(CityCreator.cout(glouton_insertion))) + " km")
