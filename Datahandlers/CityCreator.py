@@ -173,39 +173,70 @@ class CityCreator:
     '''
     Permet de trouver une tournée gloutone par insertion proche
     '''
-    def insertion_proche(self, listcity):
+    def insertion_proche(self):
+        listcity = copy(self.listcity)
         city1, city2, _ = self.plus_loin()
 
-        if city1 in listcity:
+        if city1 and city2 in listcity:
             listcity.pop(listcity.index(city1))
+            listcity.pop(listcity.index(city2))
 
         t2 = [city1, city2]
 
-        while len(listcity) > 0:
+        # On visite toutes les villes une à une
+        for city in listcity:
+            shortest_tour = None
+            shortest_distance = None
 
-            for city in listcity:
-                shortest_tour = None
-                shortest_distance = None
+            # On teste toutes les posibilité de nouvelles tournées par insertion
+            for element in t2:
+                new_tour = copy(t2)
+                new_tour.insert(new_tour.index(element), city)
+                new_distance = self.cout(new_tour)
 
-                for element in t2:
-                    new_tour = copy(t2)
-                    new_tour.insert(new_tour.index(element), city)
-                    new_distance = self.cout(new_tour)
-
-                    if shortest_tour is not None and shortest_distance is not None:
-                        if shortest_distance > new_distance:
-                            shortest_tour = new_tour
-                            shortest_distance = new_distance
-                    else:
+                if shortest_tour is not None and shortest_distance is not None:
+                    if shortest_distance > new_distance:
                         shortest_tour = new_tour
                         shortest_distance = new_distance
+                else:
+                    shortest_tour = new_tour
+                    shortest_distance = new_distance
 
-                t2 = shortest_tour
-
-                for city_to_del in t2:
-                    if city_to_del in listcity:
-                        listcity.pop(listcity.index(city_to_del))
+            # On retiens la tournée la plus courte trouvée actuellement
+            t2 = shortest_tour
 
         return t2
 
+    '''
+    Permet de trouver une tournée gloutone par insertion loin 
+    '''
+    def insertion_loin(self):
+        listcity = copy(self.listcity)
+        city1, city2, _ = self.plus_loin()
 
+        t2 = [city1, city2]
+
+        if city1 and city2 in listcity:
+            listcity.pop(listcity.index(city1))
+            listcity.pop(listcity.index(city2))
+
+        for city in listcity:
+            longest_tour = None
+            longest_distance = None
+
+            for element in t2:
+                new_tour = copy(t2)
+                new_tour.insert(new_tour.index(element), city)
+                new_distance = self.cout(new_tour)
+
+                if longest_tour is not None and longest_distance is not None:
+                    if longest_distance < new_distance:
+                        longest_tour = new_tour
+                        longest_distance = new_distance
+                else:
+                    longest_tour = new_tour
+                    longest_distance = new_distance
+
+            t2 = longest_tour
+
+        return t2
