@@ -17,7 +17,8 @@ if __name__ == '__main__':
               "3. Tournée par plus proche voisin \n"
               "4. Tournée plus proche voisin amélioré \n"
               "5. Tournée gloutone par insertion proche \n"
-              "6. Tournée gloutone par insertion loin \n")
+              "6. Tournée gloutone par insertion loin \n"
+              "7. Recherche locale simple")
 
         choice = input("Entrez votre choix : ")
         choice = int(choice)
@@ -95,3 +96,12 @@ if __name__ == '__main__':
 
             print("La distance lors de la tournée glouton par insertion loin est de : " + str(
                 "{:.2F}".format(CityCreator.cout(glouton_insertion))) + " km")
+
+        elif choice == 7:
+
+            recherche_locale = CityCreator.recherche_local(CityCreator.plus_proche_voisin(CityCreator.listcity[0]))
+            print("Tournée par recherche locale : ")
+            CityCreator.affichertour(recherche_locale)
+
+            print("La distance lors de la tournée par recherche locale est de : " + str(
+                "{:.2F}".format(CityCreator.cout(recherche_locale))) + " km")

@@ -240,3 +240,26 @@ class CityCreator:
             t2 = longest_tour
 
         return t2
+
+    '''
+    Permet d'effectuer une rechercher local
+    '''
+    def recherche_local(self, t_entree):
+        t_courante = copy(t_entree)
+        fini = False
+
+        while not fini:
+            fini = True
+            n = len(t_courante)
+
+            for i in range(len(t_courante)):
+                d1 = self._distance_city(t_courante[(i - 1) % n], t_courante[i]) + self._distance_city(t_courante[(i + 1) % n], t_courante[(i + 2) % n])
+                d2 = self._distance_city(t_courante[(i - 1) % n], t_courante[(i + 1) % n]) + self._distance_city(t_courante[i], t_courante[(i + 2) % n])
+
+                if d1 > d2:
+                    t_courante[i], t_courante[i+1] = t_courante[i+1], t_courante[i]
+                    fini = False
+
+        return t_courante
+
+
