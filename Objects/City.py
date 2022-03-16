@@ -3,12 +3,10 @@ import math
 """
 Classe gérant la structure d'une ville
 """
-
 class City:
     """
     Constructeur la classe City, permet d'instancier un objet city
     """
-
     def __init__(self, idcity, name, latitude, longitude):
         self.idcity = idcity
         self.name = name
