@@ -8,10 +8,10 @@ import math
 # Classe permettant d'initialiser une liste de villes grâce à un fichier txt
 # et de la stocker
 class CityCreator:
-
     """
     Permet de créer un objet de type CityCreator
     """
+
     def __init__(self, filename):
         self.listcity = []
         self.filename = filename
@@ -20,6 +20,7 @@ class CityCreator:
     '''
     Permet d'initialiser une liste de ville
     '''
+
     def _init_list(self):
 
         with open(self.filename) as file:
@@ -32,6 +33,7 @@ class CityCreator:
     '''
     Permet de lister les villes de la liste
     '''
+
     def _list_city(self):
         for city in self.listcity:
             print(city.idcity + " " + city.name)
@@ -39,6 +41,7 @@ class CityCreator:
     '''
     Permet de calculer la distance entre deux villes
     '''
+
     def _distance_city(self, city1, city2):
         y1 = city1.getY()
         y2 = city2.getY()
@@ -53,6 +56,7 @@ class CityCreator:
     '''
     Permet d'effectuer une tournée dans le sens croissant avec les distance parcouru
     '''
+
     def _ordered_tour(self):
         ordered_tour = []
 
@@ -64,6 +68,7 @@ class CityCreator:
     '''
     Permet d'afficher une liste tour
     '''
+
     def affichertour(self, tour):
         listtour = []
 
@@ -75,6 +80,7 @@ class CityCreator:
     '''
     Permet de calculer la distance parcouru dans une tournée
     '''
+
     def cout(self, tour):
         distance = 0
 
@@ -87,6 +93,7 @@ class CityCreator:
     '''
     Permet d'effectuer un parcour aléatoire
     '''
+
     def _tour_aleatoire(self, listcity):
         return list(random.sample(listcity, len(listcity)))
 
@@ -94,6 +101,7 @@ class CityCreator:
     Permet de trouver le la distance minimal par plus proche voisin pour aller
     à une ville en paramètre depuis Dijon
     '''
+
     def plus_proche_voisin(self, city1):
         t1 = [city1]
         list_city = copy(self.listcity)
@@ -108,6 +116,7 @@ class CityCreator:
     '''
     Permet de trouver la vile la plus proche d'une autre
     '''
+
     def plus_proche(self, city1, listcity):
         if city1 in listcity:
             listcity.pop(listcity.index(city1))
@@ -131,6 +140,7 @@ class CityCreator:
     '''
     Permet de trouver une tournée gloutone via le plus proche voisin amélioré
     '''
+
     def plus_proche_voisin_ameliore(self):
         best_tour = []
         best_distance = 0
@@ -152,6 +162,7 @@ class CityCreator:
     '''
     Permet de déterminer les deux ville les éloignées
     '''
+
     def plus_loin(self):
         max_dist = 0
         city1, city2 = None, None
@@ -173,6 +184,7 @@ class CityCreator:
     '''
     Permet de trouver une tournée gloutone par insertion proche
     '''
+
     def insertion_proche(self):
         listcity = copy(self.listcity)
         city1, city2, _ = self.plus_loin()
@@ -210,6 +222,7 @@ class CityCreator:
     '''
     Permet de trouver une tournée gloutone par insertion loin 
     '''
+
     def insertion_loin(self):
         listcity = copy(self.listcity)
         city1, city2, _ = self.plus_loin()
@@ -242,9 +255,10 @@ class CityCreator:
         return t2
 
     '''
-    Permet d'effectuer une rechercher local
+    Permet d'effectuer une rechercher locale
     '''
-    def recherche_local(self, t_entree):
+
+    def recherche_locale(self, t_entree):
         t_courante = copy(t_entree)
         fini = False
 
@@ -253,13 +267,36 @@ class CityCreator:
             n = len(t_courante)
 
             for i in range(len(t_courante)):
-                d1 = self._distance_city(t_courante[(i - 1) % n], t_courante[i]) + self._distance_city(t_courante[(i + 1) % n], t_courante[(i + 2) % n])
-                d2 = self._distance_city(t_courante[(i - 1) % n], t_courante[(i + 1) % n]) + self._distance_city(t_courante[i], t_courante[(i + 2) % n])
+                d1 = self._distance_city(t_courante[(i - 1) % n], t_courante[i]) + self._distance_city(
+                    t_courante[(i + 1) % n], t_courante[(i + 2) % n])
+                d2 = self._distance_city(t_courante[(i - 1) % n], t_courante[(i + 1) % n]) + self._distance_city(
+                    t_courante[i], t_courante[(i + 2) % n])
 
                 if d1 > d2:
-                    t_courante[i], t_courante[i+1] = t_courante[i+1], t_courante[i]
+                    t_courante[i], t_courante[i + 1] = t_courante[i + 1], t_courante[i]
                     fini = False
 
         return t_courante
 
+    '''
+    Permet d'effectuer une rechercher locale
+    '''
+    def recherche_local_ij_premier(self, t_entree):
+        t_courante = copy(t_entree)
+        fini = False
 
+        while not fini:
+            fini = True
+
+            for i in range(len(t_courante)):
+                for j in range(i + 1, len(t_courante)):
+
+                    d = self.cout(t_courante)
+                    t_courante[i], t_courante[j] = t_courante[j], t_courante[i]
+
+                    if d < self.cout(t_courante):
+                        t_courante[i], t_courante[j] = t_courante[j], t_courante[i]
+                    else:
+                        fini = False
+
+        return t_courante
