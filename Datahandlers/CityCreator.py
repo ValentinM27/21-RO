@@ -220,7 +220,7 @@ class CityCreator:
         return t2
 
     '''
-    Permet de trouver une tournée gloutone par insertion loin 
+    Permet de trouver une tournée gloutone par insertion loin : Non fonctionnel
     '''
 
     def insertion_loin(self):
@@ -234,23 +234,23 @@ class CityCreator:
             listcity.pop(listcity.index(city2))
 
         for city in listcity:
-            longest_tour = None
-            longest_distance = None
+            shortest_tour = None
+            shortest_distance = None
 
             for element in t2:
                 new_tour = copy(t2)
                 new_tour.insert(new_tour.index(element), city)
                 new_distance = self.cout(new_tour)
 
-                if longest_tour is not None and longest_distance is not None:
-                    if longest_distance < new_distance:
-                        longest_tour = new_tour
-                        longest_distance = new_distance
+                if shortest_tour is not None and shortest_distance is not None:
+                    if shortest_distance > new_distance:
+                        shortest_tour = new_tour
+                        shortest_distance = new_distance
                 else:
-                    longest_tour = new_tour
-                    longest_distance = new_distance
+                    shortest_tour = new_tour
+                    shortest_distance = new_distance
 
-            t2 = longest_tour
+            t2 = shortest_tour
 
         return t2
 
@@ -279,8 +279,9 @@ class CityCreator:
         return t_courante
 
     '''
-    Permet d'effectuer une rechercher locale
+    Permet d'effectuer une rechercher locale ij premier 
     '''
+
     def recherche_local_ij_premier(self, t_entree):
         t_courante = copy(t_entree)
         fini = False
@@ -300,3 +301,23 @@ class CityCreator:
                         fini = False
 
         return t_courante
+
+    '''
+    Permet d'effectuer une super recherche locale 
+    '''
+
+    def super_recherche_locale(self, t_entree):
+        continuer = True
+        meilleur = t_entree
+        t_actuel = copy(t_entree)
+
+        while continuer:
+            continuer = False
+            t_actuel = self.recherche_locale(t_actuel)
+            t_actuel = self.recherche_local_ij_premier(t_actuel)
+
+            if self.cout(meilleur) > self.cout(t_actuel):
+                meilleur = t_actuel
+                continuer = True
+
+        return meilleur

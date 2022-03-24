@@ -19,7 +19,8 @@ if __name__ == '__main__':
               "5. Tournée gloutone par insertion proche \n"
               "6. Tournée gloutone par insertion loin \n"
               "7. Recherche locale simple \n"
-              "8. Recherche locale ij premier")
+              "8. Recherche locale ij premier \n"
+              "9. Super recherche locale")
 
         choice = input("Entrez votre choix : ")
         choice = int(choice)
@@ -116,3 +117,13 @@ if __name__ == '__main__':
             print("La distance lors de la tournée par recherche locale ij premier est de : " + str(
                 "{:.2F}".format(CityCreator.cout(recherche_locale))) + " km")
 
+        elif choice == 9:
+            copyList = copy(CityCreator.listcity)
+            glouton_insertion = CityCreator.insertion_proche()
+
+            super_locale = CityCreator.super_recherche_locale(glouton_insertion)
+            print("Super recherche locale : ")
+            CityCreator.affichertour(super_locale)
+
+            print("La distance lors de la super recherche locale  est de : " + str(
+                "{:.2F}".format(CityCreator.cout(super_locale))) + " km")
